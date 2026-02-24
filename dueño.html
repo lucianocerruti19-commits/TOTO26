@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dueño</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<h1>Dashboard</h1>
+
+<div id="stats"></div>
+
+<script type="module">
+import { db } from "./firebase.js";
+import { getDocs, collection } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js";
+
+async function calcular() {
+  const snap = await getDocs(collection(db, "pedidos"));
+
+  let hoy = 0;
+  let semana = 0;
+  let mes = 0;
+
+  const ahora = new Date();
+
+  snap.forEach(doc => {
+    const p = doc.data();
+    if (p.estado !== "entregado" || !p.createdAt) return;
+
+    const fecha = p.createdAt.toDate();
+    const total = p.items.reduce((a, b) => a + b.precio, 0);
+
+    const diff = (ahora - fecha) / (1000 * 60 * 60 * 24);
+
+    if (diff <= 1) hoy += total;
+    if (diff <= 7) semana += total;
+    if (diff <= 30) mes += total;
+  });
+
+  document.getElementById("stats").innerHTML = `
+    <div class="card">
+      <h2>Ventas hoy</h2>
+      <p>$${hoy}</p>
+    </div>
+
+    <div class="card">
+      <h2>Últimos 7 días</h2>
+      <p>$${semana}</p>
+    </div>
+
+    <div class="card">
+      <h2>Últimos 30 días</h2>
+      <p>$${mes}</p>
+    </div>
+  `;
+}
+
+calcular();
+</script>
+
+</body>
+</html>

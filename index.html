@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>TOTO BAR</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="banner">
+  <h1 class="logo">TOTO BAR</h1>
+</div>
+
+<div class="menu">
+  <h2>Ingresar</h2>
+
+  <select id="rol">
+    <option value="cliente">Cliente</option>
+    <option value="admin">Admin</option>
+    <option value="mozo">Mozo</option>
+    <option value="cocina">Cocina</option>
+  </select>
+
+  <input type="password" id="pass" placeholder="Contraseña (si aplica)">
+  <button onclick="entrar()">Entrar</button>
+</div>
+
+<script>
+function entrar() {
+  const rol = document.getElementById("rol").value;
+  const pass = document.getElementById("pass").value;
+
+  if (rol === "cliente") {
+    location.href = "cliente.html";
+    return;
+  }
+
+  if (rol === "admin" && pass === "toto321") {
+    location.href = "admin.html";
+    return;
+  }
+
+  if (rol === "mozo" && pass === "mozo2026") {
+    location.href = "mozo.html";
+    return;
+  }
+
+  if (rol === "cocina" && pass === "cocina2026") {
+    location.href = "cocina.html";
+    return;
+  }
+
+  alert("Contraseña incorrecta");
+}
+</script>
+
+</body>
+</html>
